@@ -258,7 +258,7 @@ function BalanceSheetSection({
         </div>
       </CardHeader>
       <CardContent className="flex-1">
-        <Table>
+        <Table containerLabel={title}>
           <TableBody>
             {categories.map((category) => (
               <CategoryRows

@@ -4,11 +4,62 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
-function Table({ className, ...props }: React.ComponentProps<"table">) {
+/**
+ * DIVERGES FROM UPSTREAM SHADCN (#450) — `npx shadcn add table` will clobber
+ * this file and bring back a scroll container that keyboard users cannot
+ * reach.
+ *
+ * Upstream wraps every table in an `overflow-x-auto` div with no tab stop.
+ * When a table is wider than its card, axe reports
+ * `scrollable-region-focusable` and a keyboard user has no way to scroll the
+ * hidden columns. The container becomes a focusable, named region only while
+ * it is actually overflowing, so a table that fits gains no pointless tab
+ * stop. Callers pass the card's title as `containerLabel`; the fallback keeps
+ * the region named for any table that does not.
+ */
+function Table({
+  className,
+  containerLabel = "Table",
+  ...props
+}: React.ComponentProps<"table"> & { containerLabel?: string }) {
+  const containerRef = React.useRef<HTMLDivElement>(null)
+  const [isOverflowing, setIsOverflowing] = React.useState(false)
+
+  React.useEffect(() => {
+    const container = containerRef.current
+    if (!container) return
+
+    const measure = () => {
+      setIsOverflowing(container.scrollWidth > container.clientWidth)
+    }
+
+    measure()
+
+    if (typeof ResizeObserver === "undefined") return
+
+    // Observe both the card-sized container and the table inside it: the
+    // container changes when the viewport does, and the table changes when
+    // its rows or cell contents do.
+    const observer = new ResizeObserver(measure)
+    observer.observe(container)
+    const table = container.querySelector("table")
+    if (table) observer.observe(table)
+
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <div
+      ref={containerRef}
       data-slot="table-container"
-      className="relative w-full overflow-x-auto"
+      role={isOverflowing ? "region" : undefined}
+      aria-label={isOverflowing ? containerLabel : undefined}
+      tabIndex={isOverflowing ? 0 : undefined}
+      className={cn(
+        "relative w-full overflow-x-auto",
+        isOverflowing &&
+          "focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-inset"
+      )}
     >
       <table
         data-slot="table"

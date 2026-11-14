@@ -65,7 +65,7 @@ export function NetWorthDriversTable({ data }: NetWorthDriversTableProps) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <Table>
+        <Table containerLabel="Net Worth Drivers">
           <TableHeader>
             <TableRow>
               <TableHead>Account Type Category</TableHead>

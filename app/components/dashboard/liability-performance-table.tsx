@@ -83,7 +83,7 @@ export function LiabilityPerformanceTable({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <Table>
+        <Table containerLabel="Liability Performance">
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>

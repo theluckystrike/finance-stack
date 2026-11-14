@@ -95,7 +95,7 @@ export function BalanceTransferTracker({ rows }: BalanceTransferTrackerProps) {
             page's min-content width. Without it, its no-wrap cells widened the
             whole page at 1280px instead of scrolling inside the card. */}
         <div className="w-0 min-w-full">
-          <Table>
+          <Table containerLabel="Balance Transfers">
             <TableHeader>
               <TableRow>
                 <TableHead>Transfer</TableHead>

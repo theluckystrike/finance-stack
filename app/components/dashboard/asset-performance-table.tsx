@@ -72,7 +72,7 @@ export function AssetPerformanceTable({ data }: AssetPerformanceTableProps) {
         <CardTitle className="text-sm font-medium">Asset Performance</CardTitle>
       </CardHeader>
       <CardContent>
-        <Table>
+        <Table containerLabel="Asset Performance">
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>

@@ -118,7 +118,7 @@ export function DebtServiceSummary({ data }: DebtServiceSummaryProps) {
             </div>
 
             {data.categories.length > 0 && (
-              <Table>
+              <Table containerLabel="Debt Service">
                 <TableHeader>
                   <TableRow>
                     <TableHead>Name</TableHead>
