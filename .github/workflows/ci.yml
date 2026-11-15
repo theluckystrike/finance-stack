@@ -543,6 +543,16 @@ jobs:
       - name: Docs index gate
         run: npm run check:docs
 
+      # Issue #442. The image, the CI runners and @types/node all name a Node
+      # major independently, and they only stay in step by hand — a half-finished
+      # major bump leaves CI testing a runtime the container never ships. The
+      # guard from #211 only asserted that *a* version was named somewhere; this
+      # one compares the Dockerfile's own stages, every actions/setup-node pin in
+      # .github/workflows/ and the @types/node range against the major the final
+      # Dockerfile stage runs.
+      - name: Node version gate
+        run: npm run check:node-version
+
       # Issue #124. Two suites in one run: tests/test_poll.py is pure unit work
       # over the dispatch loop, and tests/test_import_log.py needs the database
       # — which is why this sits here rather than in a job of its own, after the
